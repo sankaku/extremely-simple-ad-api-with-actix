@@ -1,0 +1,8 @@
+version: "3"
+services:
+  redis:
+    image: redis:6.2.1-alpine3.13
+    container_name: extremely-simple-ad-api-with-actix-redis-c
+    ports:
+      - "6379:6379"
+
