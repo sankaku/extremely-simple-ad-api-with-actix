@@ -53,7 +53,7 @@ async fn deliver(
     pool: web::Data<Pool<RedisConnectionManager>>,
 ) -> impl Responder {
     let num = params.num.unwrap_or(5);
-    info!("[deliver] num = {}", num);
+    // info!("[deliver] num = {}", num);
 
     let ads = create_ads(num);
     record_delivered(&ads, &pool).await;
@@ -88,7 +88,7 @@ async fn cv(
     pool: web::Data<Pool<RedisConnectionManager>>,
 ) -> impl Responder {
     let id = params.id;
-    info!("[cv] id = {}", id);
+    // info!("[cv] id = {}", id);
 
     let res = CvResponse {
         success: true,
@@ -107,8 +107,8 @@ fn create_ads(num: u64) -> Vec<Ad> {
     (0..num).map(|_| create_ad()).collect()
 }
 
-async fn create_pool() -> Result<Pool<RedisConnectionManager>, RedisError> {
-    let manager = RedisConnectionManager::new("redis://127.0.0.1/")?;
+async fn create_pool(uri: &str) -> Result<Pool<RedisConnectionManager>, RedisError> {
+    let manager = RedisConnectionManager::new(uri)?;
     let pool = Pool::builder().max_size(20).build(manager).await.unwrap();
     Ok(pool)
 }
@@ -118,18 +118,20 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", "info");
     env_logger::init();
 
-    let pool = create_pool().await.expect("Failed to create pool");
+    let redis_uri = std::env::var("REDIS_URI").unwrap_or("redis://127.0.0.1/".to_string());
+    let bind_addr = std::env::var("BIND_ADDR").unwrap_or("127.0.0.1:8080".to_string());
+    let pool = create_pool(&redis_uri).await.expect("Failed to create pool");
 
     HttpServer::new(move || {
-        let logger = Logger::default();
+        // let logger = Logger::default();
 
         App::new()
             .data(pool.clone())
-            .wrap(logger)
+            //  .wrap(logger)
             .service(deliver)
             .service(cv)
     })
-    .bind("127.0.0.1:8080")?
+    .bind(bind_addr)?
     .run()
     .await
 }

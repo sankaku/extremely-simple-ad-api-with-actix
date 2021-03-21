@@ -1,8 +1,18 @@
 version: "3"
 services:
-  redis:
+  app:
+    build: ./app
+    image: extremely-simple-ad-api-with-actix-app
+    container_name: extremely-simple-ad-api-with-actix-app-c
+    ports:
+      - "8080:8080"
+    environment:
+      REDIS_URI: "redis://db/"
+      BIND_ADDR: "0.0.0.0:8080"
+
+  db:
     image: redis:6.2.1-alpine3.13
-    container_name: extremely-simple-ad-api-with-actix-redis-c
+    container_name: extremely-simple-ad-api-with-actix-db-c
     ports:
       - "6379:6379"
 
