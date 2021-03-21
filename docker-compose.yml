@@ -7,12 +7,24 @@ services:
     ports:
       - "8080:8080"
     environment:
-      REDIS_URI: "redis://db/"
+      # REDIS_URI: "redis://db/"
+      REDIS_URI: "unix:////run/redis/redis.sock"
       BIND_ADDR: "0.0.0.0:8080"
+    # network_mode: host
+    volumes:
+      - "extremely-simple-ad-api-with-actix-all-db-socket:/run/redis"
 
   db:
-    image: redis:6.2.1-alpine3.13
+    build: ./db
+    image: extremely-simple-ad-api-with-actix-all-db
+    # image: redis:6.2.1-alpine3.13
     container_name: extremely-simple-ad-api-with-actix-all-db-c
     ports:
       - "6379:6379"
+    # network_mode: host
+    volumes:
+      - "extremely-simple-ad-api-with-actix-all-db-socket:/run/redis"
+
+volumes:
+  extremely-simple-ad-api-with-actix-all-db-socket:
 
