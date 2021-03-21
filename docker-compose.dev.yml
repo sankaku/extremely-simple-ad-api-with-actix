@@ -2,6 +2,6 @@ version: "3"
 services:
   db:
     image: redis:6.2.1-alpine3.13
-    container_name: extremely-simple-ad-api-with-actix-db-c
+    container_name: extremely-simple-ad-api-with-actix-dev-db-c
     ports:
       - "6379:6379"

@@ -3,7 +3,7 @@ services:
   app:
     build: ./app
     image: extremely-simple-ad-api-with-actix-app
-    container_name: extremely-simple-ad-api-with-actix-app-c
+    container_name: extremely-simple-ad-api-with-actix-all-app-c
     ports:
       - "8080:8080"
     environment:
@@ -12,7 +12,7 @@ services:
 
   db:
     image: redis:6.2.1-alpine3.13
-    container_name: extremely-simple-ad-api-with-actix-db-c
+    container_name: extremely-simple-ad-api-with-actix-all-db-c
     ports:
       - "6379:6379"
 

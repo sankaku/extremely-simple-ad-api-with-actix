@@ -1,19 +1,25 @@
 # extremely-simple-ad-api-with-actix
 
-## Build/Run on docker only
+## Build/Run
+There're two `docker-compose` YAML files in this repository.  
+To avoid conflicting the names of docker networks, `-p <project_name>` option is used here.
+
+### Build/Run on docker only
+All you need is `docker-compose`.
+
 ```sh
 docker-compose build
-docker-compose up
+docker-compose -p extremely-simple-ad-api-with-actix-all up
 
 # To stop...
 # Push Ctrl-C
 ```
 
-## Build/Run app with cargo, Run redis on docker
-`cargo` must be installed in local machine.
+### Build/Run app with cargo, Run redis on docker
+Besides `docker-compose`, `cargo` must be installed in local machine.
 
 ```sh
-docker-compose --file docker-compose.dev.yml up -d
+docker-compose -p extremely-simple-ad-api-with-actix-dev --file docker-compose.dev.yml up -d
 cd app
 cargo build --release
 cargo run --release
@@ -21,7 +27,7 @@ cargo run --release
 # To stop...
 # Push Ctrl-C
 cd ../
-docker-compose --file docker-compose.dev.yml down
+docker-compose -p extremely-simple-ad-api-with-actix-dev --file docker-compose.dev.yml down
 ```
 
 ## API
