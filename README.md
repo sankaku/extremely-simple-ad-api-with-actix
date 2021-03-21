@@ -1,4 +1,7 @@
 # extremely-simple-ad-api-with-actix
+Very simple ad api using actix-web.
+
+Not for practical use. This is meant to be a target of stress test exercise.
 
 ## Build/Run
 There're two `docker-compose` YAML files in this repository.  
@@ -32,6 +35,14 @@ docker-compose -p extremely-simple-ad-api-with-actix-dev --file docker-compose.d
 
 ## API
 ### GET `/deliver`
+Delivers ads.
+
+The IDs of delivered ads are UUIDs and recorded in Redis as hashes.  
+The key of Redis hash is like `id:55ce12a7-0b4c-4802-8757-9c906dc5e837`.
+
+- `num`  
+  [_Optional_, _Default_ = 5] Integer. The number of ads to be returned.
+
 ```sh
 $ curl --silent localhost:8080/deliver?num=3 | jq
 {
@@ -56,6 +67,11 @@ $ curl --silent localhost:8080/deliver?num=3 | jq
 ```
 
 ### POST `/cv`
+Tracks a conversion.
+
+- `id`  
+  [_Mandatory_] UUID. An ID of the fetched ads in `/deliver`.
+
 ```sh
 $ curl --silent -XPOST localhost:8080/cv?id=55ce12a7-0b4c-4802-8757-9c906dc5e837 | jq
 {
@@ -68,3 +84,6 @@ $ curl --silent -XPOST localhost:8080/cv?id=55ce12a7-0b4c-4802-8757-9c906dc5e837
   }
 }
 ```
+
+## License
+MIT License
